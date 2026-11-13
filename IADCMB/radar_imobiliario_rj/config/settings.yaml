@@ -1,0 +1,62 @@
+# Radar Imobiliário RJ - Configurações
+project:
+  name: "Radar Imobiliário RJ"
+  version: "1.0.0"
+  description: "Plataforma de Inteligência Imobiliária - Imóveis Caixa RJ"
+
+paths:
+  raw_data: "data/raw/Lista_imoveis_RJ.csv"
+  processed_dir: "data/processed"
+  historico_db: "data/historico_imoveis.db"
+  geo_cache_dir: "data/geo_cache"
+
+csv:
+  encoding: "latin-1"
+  delimiter: ";"
+  skip_rows: 2
+  decimal_separator_price: ","
+  thousands_separator_price: "."
+  decimal_separator_discount: "."
+
+validation:
+  # Regras de validação
+  price_min: 1000
+  price_max: 50000000
+  evaluation_min: 1000
+  evaluation_max: 50000000
+  discount_min: 0
+  discount_max: 100
+  max_price_vs_evaluation_ratio: 2.0  # Preço não pode ser > 2x avaliação
+  max_discount_diff_pct: 5.0  # Diferença máxima entre desconto informado e calculado
+
+enrichment:
+  # Extração de características
+  extract_area_privativa: true
+  extract_area_total: true
+  extract_area_terreno: true
+  extract_quartos: true
+  extract_banheiros: true
+  extract_vagas: true
+  extract_tipo_imovel: true
+
+  # Cálculos derivados
+  calculate_price_per_m2: true
+  calculate_discount_calculated: true
+  calculate_score_oportunidade: true
+
+geo:
+  # Configurações geográficas
+  uf: "RJ"
+  ibge_geojson_url: "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson"
+  ibge_municipios_geojson: "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-33-mun.json"
+  cache_geojson: true
+
+dashboard:
+  host: "0.0.0.0"
+  port: 8501
+  theme: "light"
+
+logging:
+  level: "INFO"
+  file: "logs/pipeline.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
